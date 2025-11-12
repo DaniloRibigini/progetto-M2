@@ -78,6 +78,8 @@ img {
 #answers-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 15px;
 
 }
 
@@ -90,4 +92,95 @@ img {
     display: flex;
 }
 
-button
+/* button {
+    padding: 10px 20px;
+    width: 400px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: rgba(170, 170, 180, 0.2);
+    color: white;
+    border: 2px solid white;
+    font-size: 16px;
+    /* cursor: pointer; */
+/* transition: all 0.3s ease; */
+/* box-shadow: 0 0 10px rgba(255, 255, 255, .15),
+        inset 0 1px 2px rgba(170, 170, 180, .25); */
+/* transition: transform .2s ease, box-shadow .2s ease; */
+
+
+/* 
+    background:
+        linear-gradient(#1a1c2b, #1a1c2b) padding-box,
+        /* colore di sfondo interno */
+/* linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)) border-box; */
+/* bordo sfumato */
+/* background-clip: padding-box, border-box; */
+
+
+
+/* }
+
+.button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+} */
+
+/* applica questa classe SOLO dove vuoi il bordo sfumato */
+.button {
+    padding: 10px 20px;
+    width: 400px;
+    height: 80px;
+    border-radius: 40px;
+
+
+    position: relative;
+    /* il tuo raggio */
+    border: none;
+    /* importante: niente bordo reale */
+}
+
+/* 1) livello esterno: il bordo con gradiente bianco -> trasparente */
+.button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    /* spessore del bordo */
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, .95) 0%,
+            rgba(255, 255, 255, .55) 35%,
+            rgba(255, 255, 255, .15) 60%,
+            rgba(255, 255, 255, 0) 100%
+            /* sfuma nello sfondo del bottone */
+        );
+    pointer-events: none;
+}
+
+/* 2) “tappo” interno: lascia visibile solo l’anello del bordo */
+.button::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    /* = padding sopra */
+    border-radius: calc(40px - 2px);
+    background: inherit;
+    /* mantiene il TUO background del bottone */
+    pointer-events: none;
+}
+
+
+.colonna1,
+.colonna2 {
+    gap: 40px;
+}
