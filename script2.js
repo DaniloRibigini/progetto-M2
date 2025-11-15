@@ -98,66 +98,11 @@ const questions = [
   },
 ];
 
-// let score = 0
-// let currentQuestionIndex = 0
-// let domande = document.getElementById('question-text')
-
-// let btns = [
-//   document.getElementById('answer-btn1'),
-//   document.getElementById('answer-btn2'),
-//   document.getElementById('answer-btn3'),
-//   document.getElementById('answer-btn4')
-// ];
-
-//funzione che deve mostrare automaticamente le domande
-
-
-// function showQuestionIndex() {
-//   const question = questions[currentQuestionIndex];
-//   document.getElementById("question-text").textContent = question.question;
-//   const answersDiv = document.getElementById("answers-container");
-// }
-
-// //per ogni domanda mettere un ciclo for
-
-// console.log()
-
-// domande.innerText = questions[0].question
-// btns[0].innerText = questions[0].correct_answer
-// btns[1].innerText = questions[0].incorrect_answers[0];
-// btns[2].innerText = questions[0].incorrect_answers[1];
-// btns[3].innerText = questions[0].incorrect_answers[2];
-
-///------------shuffle--------------///
-
-// let arrayRisposte = questions.correct_answers.push(questions.incorrect_answer);
-// console.log(arrayRisposte);
-
-// function shuffle(array) {
-//   let currentIndex = array.length;
-
-//   // While there remain elements to shuffle...
-//   while (currentIndex != 0) {
-
-//     // Pick a remaining element...
-//     let randomIndex = Math.floor(Math.random() * currentIndex);
-//     currentIndex--;
-
-//     // And swap it with the current element.
-//     [array[currentIndex], array[randomIndex]] = [
-//       array[randomIndex], array[currentIndex]];
-//   }
-// }
-
-// // Used like so
-// let arr = [2, 11, 37, 42];
-// shuffle(arr);
-
-// ------------ VARIABILI ------------------
+// ------------ VARIABILI STATO -------------
 let index = 0;
 let score = 0;
 
-// ------------ ELEMENTI HTML ------------------
+// ------------ ELEMENTI HTML -------------
 const questionText = document.getElementById("question-text");
 const buttons = [
   document.getElementById("answer-btn1"),
@@ -167,6 +112,20 @@ const buttons = [
 ];
 const footer = document.querySelector("footer p");
 
+// ------------ FUNZIONE SHUFFLE -------------
+function shuffle(array) {
+  let currentIndex = array.length;
+
+  while (currentIndex !== 0) {
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    let temp = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temp;
+  }
+}
+
 // ------------ MOSTRA DOMANDA -------------
 function showQuestion() {
   const q = questions[index];
@@ -174,20 +133,26 @@ function showQuestion() {
   questionText.innerHTML = q.question;
   footer.innerHTML = "QUESTION " + (index + 1) + " <span>/ " + questions.length + "</span>";
 
-  const allAnswers = q.wrong.slice();
-  allAnswers.push(q.correct);
+  const allAnswers = [];
 
-  // shuffle semplice
-  allAnswers.sort(function () {
-    return Math.random() - 0.5;
-  });
+  // aggiungo le risposte sbagliate
+  for (let i = 0; i < q.incorrect_answers.length; i++) {
+    allAnswers.push(q.incorrect_answers[i]);
+  }
 
+  // aggiungo la risposta corretta
+  allAnswers.push(q.correct_answer);
+
+  // mischio le risposte
+  shuffle(allAnswers);
+
+  // popolo i bottoni
   for (let i = 0; i < 4; i++) {
     buttons[i].style.backgroundColor = "";
     buttons[i].style.color = "";
     buttons[i].disabled = false;
 
-    if (allAnswers[i]) {
+    if (i < allAnswers.length) {
       buttons[i].style.display = "inline-block";
       buttons[i].innerText = allAnswers[i];
     } else {
@@ -199,13 +164,14 @@ function showQuestion() {
 
 // ------------ LOGICA RISPOSTA -------------
 function chooseAnswer(text) {
-  const correct = questions[index].correct;
+  const correct = questions[index].correct_answer;
 
   if (text === correct) {
     score++;
   }
 
   index++;
+
 
   if (index < questions.length) {
     showQuestion();
@@ -224,7 +190,7 @@ function showResult() {
     comment = "Complimenti! 🎯";
   } else {
     message = "Quiz non superato 😢";
-    comment = "Ricarica la pagina per riprovare 💪";
+    comment = "Ricarica la pagina per riprovare💪";
   }
 
   document.body.innerHTML =
@@ -244,14 +210,16 @@ for (let i = 0; i < buttons.length; i++) {
       return;
     }
 
+    // colora il bottone cliccato
     this.style.backgroundColor = "#D20094";
     this.style.color = "white";
 
-    // disabilita click su tutti i bottoni
+    // disabilita tutti i bottoni per evitare doppi click
     for (let j = 0; j < buttons.length; j++) {
       buttons[j].disabled = true;
     }
 
+    // aspetta 1.2 secondi prima di passare alla domanda successiva
     setTimeout(function () {
       chooseAnswer(answerText);
     }, 200);
