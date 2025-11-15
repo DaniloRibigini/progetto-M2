@@ -1,25 +1,10 @@
-const checkbox = document.getElementById("promise")
-const procedi = document.getElementsByClassName("procedi")
+const checkbox = document.getElementById('promise');
+const button = document.querySelector('.procedi');
 
-//event listener se la checkbox non è checcata il pulsante procedi non funziona
-
-//if la checkbox
-
-checkbox.addEventListener("change", checkato(){
-    procedi.disabled = !checkbox.checked
+checkbox.addEventListener('change', function () {
+    button.disabled = !checkbox.checked;
 });
 
-// function checkato() {
-
-
-//     !checkbox.checked = procedi.disabled
-// }
-
-
-procedi.addEventListener("click", cambia())
-
-function cambia() {
-    window.location.href = ""
-
-}
-
+button.addEventListener('click', function () {
+    window.location.href = 'questions.html';
+});
